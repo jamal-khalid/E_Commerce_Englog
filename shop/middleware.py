@@ -30,10 +30,16 @@ class JWTAuthMiddlewareInstance:
     async def __call__(self, receive, send):
         from rest_framework_simplejwt.tokens import UntypedToken
         from django.contrib.auth.models import AnonymousUser
-        # get token from query string
         query_string = self.scope.get("query_string", b"").decode()
-        query_params = parse_qs(query_string)
-        token = query_params.get("token")
+        print(f"WebSocket query string: {query_string}")
+        token = parse_qs(query_string).get("token")
+        print(f"Token received: {token}")
+
+
+        # get token from query string
+        # query_string = self.scope.get("query_string", b"").decode()
+        # query_params = parse_qs(query_string)
+        # token = query_params.get("token")
         if token:
             token = token[0]
             try:
