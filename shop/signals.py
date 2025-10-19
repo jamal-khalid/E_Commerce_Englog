@@ -7,6 +7,7 @@ from .models import Order
 
 @receiver(post_save, sender=Order)
 def notify_user_order_update(sender, instance, created, **kwargs):
+    print('signal called hereeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee')
     user_id = instance.user.id
     print('this is user id',user_id)
     channel_layer = get_channel_layer()
