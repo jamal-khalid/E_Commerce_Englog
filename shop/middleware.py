@@ -1,7 +1,6 @@
 from urllib.parse import parse_qs
 from channels.auth import AuthMiddlewareStack
 from channels.db import database_sync_to_async
-from rest_framework_simplejwt.tokens import UntypedToken
 from django.contrib.auth.models import AnonymousUser
 from django.db import close_old_connections
 from jwt import decode as jwt_decode, InvalidTokenError
@@ -29,6 +28,7 @@ class JWTAuthMiddlewareInstance:
         self.middleware = middleware
 
     async def __call__(self, receive, send):
+        from rest_framework_simplejwt.tokens import UntypedToken
         # get token from query string
         query_string = self.scope.get("query_string", b"").decode()
         query_params = parse_qs(query_string)
