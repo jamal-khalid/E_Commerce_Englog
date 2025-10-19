@@ -1,8 +1,7 @@
 from django.urls import re_path
-from channels.auth import AuthMiddlewareStack
-from channels.routing import ProtocolTypeRouter, URLRouter
 from .consumers import OrderNotificationConsumer
+from .middleware import JWTAuthMiddlewareStack
 
 websocket_urlpatterns = [
-    re_path(r'ws/notifications/$', AuthMiddlewareStack(OrderNotificationConsumer.as_asgi())),
+    re_path(r'ws/notifications/$', JWTAuthMiddlewareStack(OrderNotificationConsumer.as_asgi())),
 ]
