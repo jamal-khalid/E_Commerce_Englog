@@ -3,6 +3,7 @@ import json
 
 class OrderNotificationConsumer(AsyncWebsocketConsumer):
     async def connect(self):
+        print("WebSocket connected")
         user = self.scope['user']
         if user.is_authenticated:
             self.group_name = f"user_{user.id}"
