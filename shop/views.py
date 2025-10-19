@@ -6,6 +6,8 @@ from django_filters.rest_framework import DjangoFilterBackend
 from django.core.cache import cache
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
+from rest_framework import serializers
+
 
 from .models import User, Category, Product, CartItem, Order
 from .serializers import (UserRegisterSerializer, UserSerializer, CategorySerializer,
@@ -109,8 +111,13 @@ class OrderViewSet(viewsets.ModelViewSet):
     serializer_class = OrderSerializer
     permission_classes = [IsAuthenticated]
 
+    # def get_queryset(self):
+    #     return Order.objects.filter(user=self.request.user)
     def get_queryset(self):
-        return Order.objects.filter(user=self.request.user)
+        user = self.request.user
+        if user.is_staff or user.is_superuser:
+            return Order.objects.all()
+        return Order.objects.filter(user=user)
 
     def perform_create(self, serializer):
         user = self.request.user
