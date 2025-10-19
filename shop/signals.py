@@ -8,6 +8,7 @@ from .models import Order
 @receiver(post_save, sender=Order)
 def notify_user_order_update(sender, instance, created, **kwargs):
     user_id = instance.user.id
+    print('this is user id',user_id)
     channel_layer = get_channel_layer()
     group_name = f"user_{user_id}"
     async_to_sync(channel_layer.group_send)(
@@ -21,3 +22,4 @@ def notify_user_order_update(sender, instance, created, **kwargs):
             },
         },
     )
+    print("Notification send call completed")
