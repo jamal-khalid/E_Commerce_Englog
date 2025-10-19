@@ -7,6 +7,7 @@ from asgiref.sync import async_to_sync
 def notify_user_order_update(user_id, content):
     channel_layer = get_channel_layer()
     group_name = f"user_{user_id}"
+    print(user_id, 'this is user id')
     async_to_sync(channel_layer.group_send)(
         group_name,
         {
@@ -18,6 +19,7 @@ def notify_user_order_update(user_id, content):
 class OrderAdmin(admin.ModelAdmin):
     def save_model(self, request, obj, form, change):
         super().save_model(request, obj, form, change)
+        print('this is user id ',obj.user.email)
         notify_user_order_update(obj.user.id, {
             "order_id": obj.id,
             "status": obj.status,

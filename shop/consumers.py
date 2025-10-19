@@ -4,6 +4,7 @@ import json
 class OrderNotificationConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         user = self.scope['user']
+        print('this is user')
         if user.is_authenticated:
             self.group_name = f"user_{user.id}"
             await self.channel_layer.group_add(self.group_name, self.channel_name)
