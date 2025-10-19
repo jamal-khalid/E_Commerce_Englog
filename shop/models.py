@@ -78,6 +78,12 @@ class Order(models.Model):
         return sum(item.total_price for item in self.items.all())
 
 class OrderItem(models.Model):
+    ORDER_STATUS_CHOICES = [
+        ('PENDING', 'Pending'),
+        ('SHIPPED', 'Shipped'),
+        ('DELIVERED', 'Delivered'),
+    ]
+    
     order = models.ForeignKey(Order, related_name='items', on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True)
     quantity = models.PositiveIntegerField()
